@@ -1,4 +1,4 @@
-from collections import defaultdict
+from collections import defaultdict, deque
 
 ####################################### HELPERS #######################################
 
@@ -9,6 +9,35 @@ def make_edge_list(src_list, dest_list, weight_list):
 
 def make_edge(a, b, directed: bool=False):
     return (a, b) if directed else frozenset({a, b})
+
+def gravity(m, grav_center):
+    """
+    apply "gravity" to a matrix, slide stones towards center of grav
+    '.': free spot
+    '#': stones
+    '*': stationary obstacle that doesnt move
+    :param m: List[List[chr]]
+    :param grav_center: string
+    :return: List[List[chr]]
+    """
+    for j in range(len(m[0])):
+        free_tiles = 0
+        for i in range(len(m) - 1, -1, -1):
+            match m[i][j]:
+                case '.':
+                    free_tiles += 1
+                case '*':
+                    free_tiles = 0
+                case '#':
+                    m[i][j] = '.'
+                    m[i + free_tiles][j] = '#'
+                case _:
+                    pass
+    return m
+
+
+def rotate(m):  # rotate matrix 90deg (clockwise)
+    return [[m[j][i] for j in range(len(m) - 1, -1, -1)] for i in range(len(m[0]))]
 
 ##############################################################################
 
@@ -56,4 +85,19 @@ class UnionFind:
             self.parent[c1] = c2
         self.cluster_count -= 1
         return 1
+
+
+def binary_search(l, r, arr, target):
+    while l <= r:
+        m = (l + r) // 2
+        if arr[m] < target:
+            l = m + 1
+        else:
+            r = m - 1
+    return r
+
 ##############################################################################
+
+
+if __name__ == '__main__':
+    print(binary_search([10], 5))  # -1
