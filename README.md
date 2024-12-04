@@ -1,1 +1,1 @@
-My solutions of LeetCode Problems (https://leetcode.com/problemset/)
+My solutions for LeetCode Problems (https://leetcode.com/problemset/)
